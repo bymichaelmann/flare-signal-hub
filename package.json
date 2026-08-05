@@ -1,0 +1,45 @@
+{
+  "name": "flare-signal-hub",
+  "version": "0.1.0",
+  "description": "Explainable AI trading signals from FTSOv2 price feeds on Flare — a CLI and a self-contained HTML dashboard.",
+  "type": "module",
+  "author": "Michael Mann <michaelmann@disroot.org>",
+  "license": "MIT",
+  "keywords": [
+    "flare",
+    "ftso",
+    "ftso-v2",
+    "oracle",
+    "technical-analysis",
+    "trading-signals",
+    "rsi",
+    "macd"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "flare-signal-hub": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "fixtures"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/cli.js",
+    "gen:fixtures": "node scripts/generate-fixtures.mjs"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "ethers": "^6.17.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.7"
+  }
+}

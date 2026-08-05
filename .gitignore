@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+out/
+coverage/
+.cache/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Runtime data (sampled price history)
+data/
+
+# Editor / OS
+.DS_Store
+*.tsbuildinfo
+.idea/
+.vscode/
