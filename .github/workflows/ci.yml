@@ -19,11 +19,11 @@ jobs:
       - name: Run deterministic test suite
         run: npm test
 
-  # Live job — only runs when the LIVE_RPC secret is configured, so it is
-  # skipped (never red) on forks or repos without the secret.
+  # Live job — always runs, but the smoke tests skip themselves when the
+  # LIVE_RPC secret is not configured (never red on forks or repos without
+  # the secret).
   live:
     runs-on: ubuntu-latest
-    if: ${{ secrets.LIVE_RPC != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,4 +34,9 @@ jobs:
       - name: Run live RPC smoke tests
         env:
           LIVE_RPC: ${{ secrets.LIVE_RPC }}
-        run: npx vitest run tests/live.test.ts
+        run: |
+          if [ -z "$LIVE_RPC" ]; then
+            echo "LIVE_RPC not configured - skipping live smoke tests"
+            exit 0
+          fi
+          npx vitest run tests/live.test.ts
