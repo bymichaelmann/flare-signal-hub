@@ -67,6 +67,10 @@ function safeJson(value: unknown): string {
 }
 
 export function renderDashboard(data: DashboardData): string {
+  const dataSource =
+    data.mode === 'live'
+      ? 'Data source: FTSOv2 on-chain price feeds, Flare mainnet (chain 14), read directly via <code>FtsoV2.getFeedByIdInWei</code>.'
+      : 'Data source: synthetic seeded series (fixture mode) — deterministic demo data, not live market prices.';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -133,8 +137,7 @@ export function renderDashboard(data: DashboardData): string {
 </header>
 <main id="cards"></main>
 <footer>
-  Data source: FTSOv2 on-chain price feeds, Flare mainnet (chain 14), read directly via
-  <code>FtsoV2.getFeedByIdInWei</code>. Signals are deterministic technical-analysis output —
+  ${dataSource} Signals are deterministic technical-analysis output —
   informational only, not financial advice.
 </footer>
 <script>

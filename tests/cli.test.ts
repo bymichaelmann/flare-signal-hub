@@ -90,6 +90,35 @@ describe('runSignal — live mode with a stub feed reader', () => {
     expect(progress.some((m) => /warming up/.test(m))).toBe(true);
   });
 
+  it('warms up history without storing duplicate timestamps', async () => {
+    let calls = 0;
+    const stub: FeedReader = {
+      rpcUrl: 'stub://local',
+      read: async (symbol) => {
+        calls++;
+        // Same timestamp on every poll — simulates an interval shorter than
+        // the on-chain feed cadence.
+        return { symbol, price: 100 + calls, timestamp: 1_700_000_000 };
+      },
+    };
+    const { reports } = await runSignal(
+      {
+        ...base,
+        symbols: ['TEST/USD'],
+        mode: 'live',
+        historySize: 5,
+        minLiveSamples: 200, // force the warm-up path
+      },
+      stub,
+    );
+    expect(calls).toBe(5); // polled historySize times...
+    expect(reports).toHaveLength(1);
+    expect(reports[0]!.samples).toBe(1); // ...but duplicates were deduped
+
+    const { loadHistory } = await import('../src/history.js');
+    expect(loadHistory('TEST/USD')).toHaveLength(1);
+  });
+
   it('appends a fresh sample to existing history and computes', async () => {
     const { appendSample } = await import('../src/history.js');
     appendSample('TEST/USD', { ts: 1_700_000_000, price: 100 });

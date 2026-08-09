@@ -174,8 +174,9 @@ async function seriesForSignal(
         '(FTSOv2 has no cheap on-chain history — the tool builds its own)',
     );
     const warmed = await sampleSeries(reader, symbol, opts.historySize, opts.intervalSeconds, progress);
-    saveHistory(symbol, warmed);
-    return warmed;
+    let stored: PriceSample[] = loadHistory(symbol);
+    for (const s of warmed) stored = appendSample(symbol, s);
+    return stored;
   }
 
   const fresh = await reader.read(symbol);

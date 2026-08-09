@@ -63,7 +63,7 @@ needed:
 
 ```
 FtsoV2.getFeedByIdInWei(0x01 464c522f555344 00000000000000000000)
-  -> value 5997000000000000000 (wei, 18 decimals) = 5.997 USD
+  -> value 5997000000000000 (wei, 18 decimals) = 0.005997 USD
   -> timestamp 1785939145
 ```
 

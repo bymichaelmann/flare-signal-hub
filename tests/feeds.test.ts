@@ -28,7 +28,7 @@ describe('feedIdForSymbol', () => {
 
 describe('weiToNumber', () => {
   it('converts the FLR price (18 decimals) to decimal', () => {
-    expect(weiToNumber(5997000000000000000n)).toBeCloseTo(5.997, 12);
+    expect(weiToNumber(5997000000000000n)).toBeCloseTo(0.005997, 12);
   });
 
   it('converts the BTC price (18 decimals) to decimal', () => {
@@ -44,12 +44,12 @@ describe('weiToNumber', () => {
   });
 
   it('handles negative wei', () => {
-    expect(weiToNumber(-5997000000000000000n)).toBeCloseTo(-5.997, 12);
+    expect(weiToNumber(-5997000000000000n)).toBeCloseTo(-0.005997, 12);
   });
 });
 
 describe('EthersFeedReader with a stub on-chain feed (no network)', () => {
-  const canned = { value: 5997000000000000000n, timestamp: 1785939145n };
+  const canned = { value: 5997000000000000n, timestamp: 1785939145n };
   const reader = new EthersFeedReader('http://stub.invalid', {
     getFeedByIdInWei: async (id) =>
       id === feedIdForSymbol('FLR/USD') ? canned : { value: 0n, timestamp: 0n },
@@ -57,7 +57,7 @@ describe('EthersFeedReader with a stub on-chain feed (no network)', () => {
 
   it('reads a canned feed and converts wei → decimal price', async () => {
     const sample = await reader.read('FLR/USD');
-    expect(sample.price).toBeCloseTo(5.997, 12);
+    expect(sample.price).toBeCloseTo(0.005997, 12);
     expect(sample.timestamp).toBe(1785939145);
     expect(sample.symbol).toBe('FLR/USD');
   });
